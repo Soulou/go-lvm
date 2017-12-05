@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"hash/crc32"
 	"io"
 	"log"
+
+	"github.com/Soulou/go-lvm/crc32"
 
 	"github.com/pkg/errors"
 )
@@ -37,7 +38,7 @@ func (h LabelHeader) String() string {
 }
 
 func (h LabelHeader) CheckCRC32(sector []byte) (uint32, bool) {
-	crc32checksum := crc32.Update(InitialCRC, crcTable, sector[20:SectorSize])
+	crc32checksum := crc32.Calc(InitialCRC, sector[20:SectorSize])
 	return crc32checksum, crc32checksum == h.CRC
 }
 

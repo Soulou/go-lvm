@@ -34,7 +34,7 @@ func NewPhysicalVolume(dev *dev.Device) (*PhysicalVolume, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "fail to read label header")
 	}
-	if crc32checksum, ok := labelHeader.CheckCRC32(b[labelHeader.Offset:]); !ok {
+	if crc32checksum, ok := labelHeader.CheckCRC32(b[labelHeader.Sector*SectorSize:]); !ok {
 		log.Printf("Fail to check label header checksum, got %v, expected: %v", crc32checksum, labelHeader.CRC)
 	}
 	pv.labelHeader = labelHeader
